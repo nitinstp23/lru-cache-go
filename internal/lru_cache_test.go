@@ -73,6 +73,7 @@ func TestGetCache(t *testing.T) {
 		errorText string
 	}{
 		{"get the value at the specified key in the cache", 2, [][2]int{[2]int{1, 2}}, 1, 2, ""},
+		{"return -1 if the specified key does not exist in the cache", 2, [][2]int{}, 1, -1, ""},
 	}
 
 	for _, tc := range tt {

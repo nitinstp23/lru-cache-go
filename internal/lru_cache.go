@@ -25,5 +25,11 @@ func (lruCache *LRUCache) Put(key, val int) error {
 
 // Get the value at the specified key
 func (lruCache *LRUCache) Get(key int) (int, error) {
-	return lruCache.Store[key], nil
+	val := lruCache.Store[key]
+
+	if val != 0 {
+		return val, nil
+	}
+
+	return -1, nil
 }
