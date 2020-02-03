@@ -14,11 +14,16 @@ func CreateCache(capacity int) (LRUCache, error) {
 	return lruCache, nil
 }
 
-// Put sets the specified key and value to the cache
+// Put the specified key and value to the cache
 func (lruCache *LRUCache) Put(key, val int) error {
 	lruCache.Store[key] = val
 
 	lruCache.Size++
 
 	return nil
+}
+
+// Get the value at the specified key
+func (lruCache *LRUCache) Get(key int) (int, error) {
+	return lruCache.Store[key], nil
 }

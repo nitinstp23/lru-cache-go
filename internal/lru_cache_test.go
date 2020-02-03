@@ -62,3 +62,34 @@ func TestPutCache(t *testing.T) {
 		})
 	}
 }
+
+func TestGetCache(t *testing.T) {
+	tt := []struct {
+		name      string
+		capacity  int
+		inputs    [][2]int
+		inputKey  int
+		outputVal int
+		errorText string
+	}{
+		{"get the value at the specified key in the cache", 2, [][2]int{[2]int{1, 2}}, 1, 2, ""},
+	}
+
+	for _, tc := range tt {
+		t.Run(tc.name, func(t *testing.T) {
+			lruCache, _ := internal.CreateCache(tc.capacity)
+
+			for _, input := range tc.inputs {
+				key, val := input[0], input[1]
+
+				lruCache.Put(key, val)
+			}
+
+			cacheVal, _ := lruCache.Get(tc.inputKey)
+
+			if cacheVal != tc.outputVal {
+				t.Fatalf("value at key %v should be %v; got %v", tc.inputKey, tc.outputVal, cacheVal)
+			}
+		})
+	}
+}
