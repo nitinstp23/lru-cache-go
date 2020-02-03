@@ -1,11 +1,12 @@
 package internal_test
 
 import (
-	"github.com/nitinstp23/lru-cache-go/internal"
 	"testing"
+
+	"github.com/nitinstp23/lru-cache-go/internal"
 )
 
-func TestCreateLRUCache(t *testing.T) {
+func TestCreateCache(t *testing.T) {
 	tt := []struct {
 		name        string
 		capacity    int
@@ -25,6 +26,38 @@ func TestCreateLRUCache(t *testing.T) {
 
 			if lruCache.Capacity != tc.capacity {
 				t.Fatalf("cache capacity should be %v; got %v", tc.capacity, lruCache.Capacity)
+			}
+
+			if len(lruCache.Store) != 0 {
+				t.Fatalf("cache store length should be 0; got %v", len(lruCache.Store))
+			}
+		})
+	}
+}
+
+func TestPutCache(t *testing.T) {
+	tt := []struct {
+		name      string
+		capacity  int
+		inputs    [][2]int
+		cacheSize int
+		errorText string
+	}{
+		{"puts two keys in the cache with capacity of 2", 2, [][2]int{[2]int{1, 2}, [2]int{3, 4}}, 2, ""},
+	}
+
+	for _, tc := range tt {
+		t.Run(tc.name, func(t *testing.T) {
+			lruCache, _ := internal.CreateCache(tc.capacity)
+
+			for _, input := range tc.inputs {
+				key, val := input[0], input[1]
+
+				lruCache.Put(key, val)
+			}
+
+			if lruCache.Size != tc.cacheSize {
+				t.Fatalf("cache size should be %v; got %v", tc.cacheSize, lruCache.Size)
 			}
 		})
 	}
